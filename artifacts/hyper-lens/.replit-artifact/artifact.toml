@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "HYPER LENS"
+description = "An AI-assisted Legal Metrology compliance platform for manufacturers, retailers, sellers, packaging teams, and compliance officers. Users can upload or capture product packaging, simulate OCR extraction, edit detected declarations, run configurable compliance checks, review dynamic scores and recommendations, and generate assessment reports."
+version = "1.0.0"
+id = "artifacts/hyper-lens"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25640
+
+[services.development]
+run = "pnpm --filter @workspace/hyper-lens run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hyper-lens", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/hyper-lens/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25640"
+BASE_PATH = "/"
