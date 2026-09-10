@@ -7,3 +7,18 @@ uri = "file://artifacts/hyper-lens-video/public/audio/bg_music.mp3"
 type = "audio"
 title = "HYPER LENS background music"
 description = "Generated music: Driving precision-electronic instrumental background music scoring a legal compliance technology product film. Tight analog synth pulse, restrained electronic percussion, subtle low …"
+logical_id = "60bb5a3f-fa43-4ec8-aa94-c10403f42c60"
+
+[[outputs]]
+id = "6jPzNLL1GkbFDU6_64okZ"
+uri = "file://HYPER-LENS-Compliance-Made-Visible.mp4"
+type = "video"
+title = "Download HYPER LENS — Compliance Made Visible"
+description = "Complete 45-second 16:9 MP4 with all six scenes and synchronized background music."
+logical_id = "7287a8e8-8b2a-4ef6-82ca-05ee629b7c55"
+content_hash = "sha256:f830826b27f6acae04f3c44d9dac1b8129cfab8d83cbd26dc9efc763f9919380"
+size = 4279793
+mtime_ms = 1789054512808
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/7287a8e8-8b2a-4ef6-82ca-05ee629b7c55/d0f9fc52-d326-436a-a573-1be0cebd6c08"
+storage_version_token = "1789054546433506"
+content_type = "video/mp4"
