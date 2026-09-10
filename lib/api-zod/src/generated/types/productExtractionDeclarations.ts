@@ -5,23 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
-
-export interface ProductExtractionInput {
-  /** @minLength 20 */
-  imageDataUrl: string;
-}
-
-export interface ExtractedDeclaration {
-  value: string;
-  /**
-     * @minimum 0
-     * @maximum 1
-     */
-  confidence: number;
-}
+import type { ExtractedDeclaration } from './extractedDeclaration';
 
 export type ProductExtractionDeclarations = {
   net_quantity: ExtractedDeclaration;
@@ -35,9 +19,3 @@ export type ProductExtractionDeclarations = {
   consumer_care: ExtractedDeclaration;
   batch_number: ExtractedDeclaration;
 };
-
-export interface ProductExtraction {
-  productName: string;
-  declarations: ProductExtractionDeclarations;
-}
-

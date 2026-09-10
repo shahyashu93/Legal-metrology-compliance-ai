@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: extraction
+    description: Product packaging image extraction
 paths:
   /healthz:
     get:
@@ -24,6 +26,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /extract:
+    post:
+      operationId: extractProductDetails
+      tags: [extraction]
+      summary: Extract declarations from a product package image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductExtractionInput"
+      responses:
+        "200":
+          description: Visible declarations extracted from the image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductExtraction"
+        "400":
+          description: Invalid image input
+        "502":
+          description: Image extraction provider failed
 components:
   schemas:
     HealthStatus:
@@ -33,4 +57,61 @@ components:
           type: string
       required:
         - status
+    ProductExtractionInput:
+      type: object
+      required: [imageDataUrl]
+      properties:
+        imageDataUrl:
+          type: string
+          minLength: 20
+    ExtractedDeclaration:
+      type: object
+      required: [value, confidence]
+      properties:
+        value:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+    ProductExtraction:
+      type: object
+      required: [productName, declarations]
+      properties:
+        productName:
+          type: string
+        declarations:
+          type: object
+          required:
+            - net_quantity
+            - mrp
+            - manufacture_date
+            - best_before
+            - manufacturer
+            - packer
+            - importer
+            - country_of_origin
+            - consumer_care
+            - batch_number
+          properties:
+            net_quantity:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            mrp:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            manufacture_date:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            best_before:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            manufacturer:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            packer:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            importer:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            country_of_origin:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            consumer_care:
+              $ref: "#/components/schemas/ExtractedDeclaration"
+            batch_number:
+              $ref: "#/components/schemas/ExtractedDeclaration"
 

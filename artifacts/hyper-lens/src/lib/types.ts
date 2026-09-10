@@ -18,7 +18,16 @@ export interface ComplianceRule {
   description: string;
   required: boolean;
   severity: Severity;
-  validation: (value: string | undefined) => Status;
+  validation: (
+    value: string,
+    values: Record<string, { value: string; confidence: number }>,
+  ) => Status;
+  getValue?: (
+    values: Record<string, { value: string; confidence: number }>,
+  ) => string;
+  appliesWhen?: (
+    values: Record<string, { value: string; confidence: number }>,
+  ) => boolean;
   recommendation: string;
   sourceReference: string;
 }
@@ -31,6 +40,7 @@ export interface ComplianceCheck {
   status: Status;
   severity: Severity;
   recommendation: string;
+  sourceReference: string;
 }
 
 export interface Analysis {
@@ -48,8 +58,6 @@ export interface Analysis {
 export interface DemoProduct {
   id: string;
   name: string;
-  targetScore: number;
-  overallStatus: Status;
   imageColor: string;
   mockExtractedFields: Partial<Record<string, string>>;
 }

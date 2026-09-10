@@ -3,8 +3,9 @@ import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, Camera, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DEMO_PRODUCTS, ComplianceEngine } from "@/lib/engine";
+import { ComplianceEngine } from "@/lib/engine";
 import { useScans } from "@/lib/store";
+import { useExtractProductDetails } from "@workspace/api-client-react";
 
 export default function Scanner() {
   const [isDragging, setIsDragging] = useState(false);
@@ -12,9 +13,11 @@ export default function Scanner() {
   const [preview, setPreview] = useState<string | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [scanStep, setScanStep] = useState(0);
+  const [scanError, setScanError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [, setLocation] = useLocation();
   const { addAnalysis } = useScans();
+  const extraction = useExtractProductDetails();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -43,45 +46,43 @@ export default function Scanner() {
       return;
     }
     setFile(file);
+    setScanError(null);
     const reader = new FileReader();
     reader.onload = (e) => setPreview(e.target?.result as string);
     reader.readAsDataURL(file);
   };
 
-  const startScan = () => {
+  const startScan = async () => {
     if (!preview) return;
     setIsScanning(true);
-    
-    // Simulate multi-stage scanning animation
-    const steps = [
-      "Initializing OCR Engine...",
-      "Detecting Text Regions...",
-      "Extracting Key-Value Pairs...",
-      "Running Rules Engine...",
-      "Generating Compliance Report..."
-    ];
-    
-    let currentStep = 0;
-    const interval = setInterval(() => {
-      currentStep++;
-      if (currentStep >= steps.length) {
-        clearInterval(interval);
-        
-        // Mock the result generation
-        // Just use a random demo product's extracted fields for realism
-        const demoProd = DEMO_PRODUCTS[Math.floor(Math.random() * DEMO_PRODUCTS.length)];
-        const analysis = ComplianceEngine.analyze(
-          file?.name || "Uploaded Product",
-          preview,
-          demoProd.mockExtractedFields as Record<string, string>
-        );
-        
-        addAnalysis(analysis);
-        setLocation(`/results`);
-      } else {
-        setScanStep(currentStep);
-      }
-    }, 800); // ~4 seconds total
+    setScanStep(0);
+    setScanError(null);
+
+    const interval = window.setInterval(() => {
+      setScanStep((step) => Math.min(step + 1, 4));
+    }, 600);
+
+    try {
+      const [result] = await Promise.all([
+        extraction.mutateAsync({ data: { imageDataUrl: preview } }),
+        new Promise((resolve) => window.setTimeout(resolve, 2400)),
+      ]);
+      const analysis = ComplianceEngine.analyze(
+        result.productName,
+        preview,
+        result.declarations,
+      );
+      addAnalysis(analysis);
+      setLocation("/results");
+    } catch {
+      setScanError(
+        "The package could not be read reliably. Try a sharper, well-lit image showing the full label.",
+      );
+      setIsScanning(false);
+      setScanStep(0);
+    } finally {
+      window.clearInterval(interval);
+    }
   };
 
   return (
@@ -164,6 +165,11 @@ export default function Scanner() {
               </div>
               
               <div className="mt-12">
+                {scanError && (
+                  <div role="alert" className="mb-4 border border-destructive bg-destructive/5 p-4 font-mono text-sm text-destructive">
+                    {scanError}
+                  </div>
+                )}
                 {isScanning ? (
                   <div className="bg-background border border-thin border-border p-6">
                     <div className="flex justify-between items-center mb-4">
@@ -188,7 +194,7 @@ export default function Scanner() {
                   </div>
                 ) : (
                   <div className="flex gap-4">
-                    <Button variant="outline" size="lg" className="flex-1" onClick={() => setPreview(null)}>
+                    <Button variant="outline" size="lg" className="flex-1" onClick={() => { setPreview(null); setFile(null); setScanError(null); }}>
                       Cancel
                     </Button>
                     <Button size="lg" className="flex-2 bg-foreground text-background hover:bg-accent" onClick={startScan}>

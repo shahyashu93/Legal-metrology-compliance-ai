@@ -1,0 +1,1 @@
+- [Gemini package OCR model](gemini-package-ocr.md) — use a key-listed stable vision model and retry temporary capacity errors; newer Interactions models may stall.
