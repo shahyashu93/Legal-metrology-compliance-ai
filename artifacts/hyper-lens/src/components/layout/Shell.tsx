@@ -37,9 +37,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link href="/login" className="hidden md:block">
-              <Button variant="ghost" size="sm">Sign In</Button>
-            </Link>
             <Link href="/demo">
               <Button size="sm" className="bg-accent text-white hover:bg-accent/90 border-transparent">
                 Start Demo <ArrowRight className="w-4 h-4 ml-1" />

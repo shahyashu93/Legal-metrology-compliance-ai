@@ -21,8 +21,6 @@ import Dashboard from '@/pages/dashboard';
 import Reports from '@/pages/reports';
 import DemoSelector from '@/pages/demo';
 import Presentation from '@/pages/presentation';
-import Login from '@/pages/login';
-import Signup from '@/pages/signup';
 
 const queryClient = new QueryClient();
 
@@ -39,8 +37,6 @@ function Router() {
             <Route path="/reports" component={Reports} />
             <Route path="/demo" component={DemoSelector} />
             <Route path="/presentation" component={Presentation} />
-            <Route path="/login" component={Login} />
-            <Route path="/signup" component={Signup} />
             <Route component={NotFound} />
           </Switch>
         </RoutedErrorBoundary>
