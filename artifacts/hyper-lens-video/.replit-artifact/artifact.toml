@@ -1,0 +1,29 @@
+kind = "video"
+videoAspectRatio = "16:9"
+previewPath = "/hyper-lens-video/"
+title = "HYPER LENS — Compliance Made Visible"
+description = "A 45–60 second animated product film presenting HYPER LENS, its AI-assisted package reading workflow, deterministic Legal Metrology checks, editable OCR review, and compliance results."
+version = "1.0.0"
+id = "artifacts/hyper-lens-video"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/hyper-lens-video/" ]
+localPort = 20031
+
+[services.development]
+run = "pnpm --filter @workspace/hyper-lens-video run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hyper-lens-video", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/hyper-lens-video/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20031"
+BASE_PATH = "/hyper-lens-video/"

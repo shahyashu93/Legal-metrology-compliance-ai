@@ -1,0 +1,9 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "demHOEsnzjGkB6EQfCzLU"
+uri = "file://artifacts/hyper-lens-video/public/audio/bg_music.mp3"
+type = "audio"
+title = "HYPER LENS background music"
+description = "Generated music: Driving precision-electronic instrumental background music scoring a legal compliance technology product film. Tight analog synth pulse, restrained electronic percussion, subtle low …"
