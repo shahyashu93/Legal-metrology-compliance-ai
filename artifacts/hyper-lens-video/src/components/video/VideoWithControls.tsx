@@ -108,6 +108,10 @@ function PlaybackStatus({
 
 export default function VideoWithControls() {
   const isIframed = typeof window !== 'undefined' && window.self !== window.top;
+  const isRecordingExport =
+    typeof window !== 'undefined' &&
+    (typeof window.startRecording === 'function' ||
+      typeof window.stopRecording === 'function');
   const controls = useSceneControls(SCENE_DURATIONS);
   const [muted, setMuted] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -162,7 +166,10 @@ export default function VideoWithControls() {
     return () => document.removeEventListener('pointerdown', dismiss);
   }, [collapsed, tapPinned]);
 
-  if (!isIframed) return <VideoTemplate />;
+  // The workspace exporter may itself use an iframe. Its recording bridge is
+  // the authoritative signal: always give it the canonical, unmodified
+  // timeline rather than the interactive preview wrapper.
+  if (!isIframed || isRecordingExport) return <VideoTemplate />;
 
   const iconButton =
     'flex h-14 w-14 shrink-0 items-center justify-center rounded-lg text-white/60 transition-colors hover:bg-white/10 hover:text-white';
