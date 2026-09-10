@@ -11,11 +11,26 @@ import {
 export interface DetectedDeclaration {
   value: string;
   confidence: number;
+  wasEdited?: boolean;
 }
 
 export type DetectedDeclarations = Record<string, DetectedDeclaration>;
 
 const text = (value?: string) => value?.replace(/\s+/g, ' ').trim() ?? '';
+
+export const DECLARATION_LABELS: Record<string, string> = {
+  product_name: 'Common or Generic Product Name',
+  net_quantity: 'Net Quantity',
+  mrp: 'Retail Sale Price / MRP',
+  manufacture_date: 'Month and Year of Manufacture / Packing',
+  best_before: 'Best Before / Use By',
+  manufacturer: 'Manufacturer Details',
+  packer: 'Packer Details',
+  importer: 'Importer Details',
+  country_of_origin: 'Country of Origin',
+  consumer_care: 'Consumer Complaint Contact',
+  batch_number: 'Batch / Lot Number',
+};
 
 const statusFromFormat = (
   value: string,
@@ -316,7 +331,11 @@ export class ComplianceEngine {
         : 0;
 
       let status = rule.validation(value, allValues);
-      if (value && confidence > 0 && confidence < 0.55) {
+      const wasEdited =
+        rule.id === 'LM-001'
+          ? contributingDeclarations.some((item) => item.wasEdited)
+          : declaration.wasEdited;
+      if (value && confidence > 0 && confidence < 0.55 && !wasEdited) {
         status = 'needs-verification';
       }
 
@@ -324,14 +343,6 @@ export class ComplianceEngine {
       possible += weight;
       earned += weight * statusCredit[status];
 
-      fields.push({
-        id: `field-${rule.id.toLowerCase()}`,
-        key: rule.field,
-        label: rule.title,
-        value: value || 'Not detected',
-        confidence,
-        status,
-      });
       checks.push({
         ruleId: rule.id,
         requirement: rule.title,
@@ -341,6 +352,30 @@ export class ComplianceEngine {
         severity: rule.severity,
         recommendation: rule.recommendation,
         sourceReference: rule.sourceReference,
+      });
+    }
+
+    for (const [key, declaration] of Object.entries(allValues)) {
+      const relatedCheck =
+        key === 'manufacturer' || key === 'packer' || key === 'importer'
+          ? checks.find((check) => check.ruleId === 'LM-001')
+          : checks.find(
+              (check) =>
+                COMPLIANCE_RULES.find((rule) => rule.id === check.ruleId)
+                  ?.field === key,
+            );
+      fields.push({
+        id: `field-${key.replaceAll('_', '-')}`,
+        key,
+        label: DECLARATION_LABELS[key] ?? key.replaceAll('_', ' '),
+        value: text(declaration.value),
+        confidence: declaration.confidence,
+        status:
+          declaration.value && relatedCheck
+            ? relatedCheck.status
+            : declaration.value
+              ? 'compliant'
+              : 'missing',
       });
     }
 

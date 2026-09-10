@@ -107,7 +107,7 @@ export default function Results() {
               </div>
               <div className="p-0">
                 <div className="px-6 py-4 border-b border-thin border-border bg-background">
-                  <h3 className="font-sans font-bold uppercase tracking-wide text-sm">Extracted Fields</h3>
+                  <h3 className="font-sans font-bold uppercase tracking-wide text-sm">Confirmed Declarations</h3>
                 </div>
                 <div className="max-h-[300px] overflow-y-auto">
                   {currentAnalysis.fields.map((field, i) => (
@@ -119,10 +119,10 @@ export default function Results() {
                         </Badge>
                       </div>
                       <p className="font-mono text-sm mb-2 break-words text-muted-foreground">
-                        {field.value || "Not found"}
+                        {field.value || "Left empty"}
                       </p>
                       <div className="flex items-center justify-between w-full mt-2">
-                        <span className="text-[10px] font-mono text-muted-foreground uppercase">Confidence</span>
+                        <span className="text-[10px] font-mono text-muted-foreground uppercase">Original OCR confidence</span>
                         <div className="w-24 h-1 bg-border">
                           <div className="h-full bg-foreground" style={{ width: `${field.confidence * 100}%` }} />
                         </div>

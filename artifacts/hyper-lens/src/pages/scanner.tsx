@@ -1,9 +1,14 @@
 import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Camera, ArrowRight } from "lucide-react";
+import { Upload, Camera, ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ComplianceEngine } from "@/lib/engine";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  ComplianceEngine,
+  DECLARATION_LABELS,
+  type DetectedDeclarations,
+} from "@/lib/engine";
 import { useScans } from "@/lib/store";
 import { useExtractProductDetails } from "@workspace/api-client-react";
 
@@ -14,6 +19,9 @@ export default function Scanner() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanStep, setScanStep] = useState(0);
   const [scanError, setScanError] = useState<string | null>(null);
+  const [productName, setProductName] = useState("");
+  const [declarations, setDeclarations] =
+    useState<DetectedDeclarations | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [, setLocation] = useLocation();
   const { addAnalysis } = useScans();
@@ -67,13 +75,9 @@ export default function Scanner() {
         extraction.mutateAsync({ data: { imageDataUrl: preview } }),
         new Promise((resolve) => window.setTimeout(resolve, 2400)),
       ]);
-      const analysis = ComplianceEngine.analyze(
-        result.productName,
-        preview,
-        result.declarations,
-      );
-      addAnalysis(analysis);
-      setLocation("/results");
+      setProductName(result.productName);
+      setDeclarations(result.declarations);
+      setIsScanning(false);
     } catch {
       setScanError(
         "The package could not be read reliably. Try a sharper, well-lit image showing the full label.",
@@ -83,6 +87,28 @@ export default function Scanner() {
     } finally {
       window.clearInterval(interval);
     }
+  };
+
+  const updateDeclaration = (key: string, value: string) => {
+    setDeclarations((current) =>
+      current
+        ? {
+            ...current,
+            [key]: { ...current[key], value, wasEdited: true },
+          }
+        : current,
+    );
+  };
+
+  const confirmDeclarations = () => {
+    if (!preview || !declarations) return;
+    const analysis = ComplianceEngine.analyze(
+      productName,
+      preview,
+      declarations,
+    );
+    addAnalysis(analysis);
+    setLocation("/results");
   };
 
   return (
@@ -126,6 +152,57 @@ export default function Scanner() {
                 accept="image/jpeg, image/png, image/webp" 
                 onChange={(e) => e.target.files && processFile(e.target.files[0])}
               />
+            </div>
+          </motion.div>
+        ) : declarations ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-8 items-start"
+          >
+            <div className="lg:sticky lg:top-8 border border-thin border-border bg-white p-2">
+              <img src={preview} alt="Package being reviewed" className="w-full h-auto object-contain bg-background max-h-[620px]" />
+            </div>
+            <div>
+              <div className="mb-6 pb-4 border-b border-thin border-border">
+                <p className="font-mono text-xs uppercase tracking-widest text-accent font-bold mb-2">Extraction complete</p>
+                <h2 className="font-sans text-3xl font-bold uppercase tracking-tight">Review declarations</h2>
+                <p className="font-mono text-sm text-muted-foreground mt-2">
+                  Correct OCR errors before compliance scoring. Leave text empty when the declaration is not visible.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <label className="block border border-thin border-border bg-white p-4">
+                  <div className="flex items-center justify-between gap-4 mb-2">
+                    <span className="font-sans text-sm font-bold">{DECLARATION_LABELS.product_name}</span>
+                    <span className="font-mono text-[10px] uppercase text-muted-foreground">OCR confidence 95%</span>
+                  </div>
+                  <Textarea value={productName} onChange={(event) => setProductName(event.target.value)} placeholder="Not detected" />
+                </label>
+                {Object.entries(declarations).map(([key, declaration]) => (
+                  <label key={key} className="block border border-thin border-border bg-white p-4">
+                    <div className="flex items-center justify-between gap-4 mb-2">
+                      <span className="font-sans text-sm font-bold">{DECLARATION_LABELS[key] ?? key.replaceAll("_", " ")}</span>
+                      <span className="font-mono text-[10px] uppercase text-muted-foreground">
+                        OCR confidence {Math.round(declaration.confidence * 100)}%
+                      </span>
+                    </div>
+                    <Textarea
+                      value={declaration.value}
+                      onChange={(event) => updateDeclaration(key, event.target.value)}
+                      placeholder="Not detected — leave empty if missing"
+                    />
+                  </label>
+                ))}
+              </div>
+              <div className="flex flex-col-reverse sm:flex-row gap-4 mt-6">
+                <Button variant="outline" size="lg" className="sm:flex-1" onClick={() => setDeclarations(null)}>
+                  Back to image
+                </Button>
+                <Button size="lg" className="sm:flex-[2] bg-foreground text-background hover:bg-accent" onClick={confirmDeclarations}>
+                  Confirm & Analyze <CheckCircle className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
             </div>
           </motion.div>
         ) : (
@@ -187,14 +264,14 @@ export default function Scanner() {
                         "Initializing OCR Engine...",
                         "Detecting Text Regions...",
                         "Extracting Key-Value Pairs...",
-                        "Running Rules Engine...",
-                        "Generating Compliance Report..."
+                        "Reading Package Text...",
+                        "Preparing Review..."
                       ][scanStep]}
                     </p>
                   </div>
                 ) : (
                   <div className="flex gap-4">
-                    <Button variant="outline" size="lg" className="flex-1" onClick={() => { setPreview(null); setFile(null); setScanError(null); }}>
+                    <Button variant="outline" size="lg" className="flex-1" onClick={() => { setPreview(null); setFile(null); setScanError(null); setDeclarations(null); }}>
                       Cancel
                     </Button>
                     <Button size="lg" className="flex-2 bg-foreground text-background hover:bg-accent" onClick={startScan}>
