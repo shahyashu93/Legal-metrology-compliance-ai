@@ -1,0 +1,50 @@
+[
+  {
+    "id": "5d01d8fa-ecdb-47b1-b082-62d9752eedf4",
+    "position": 1,
+    "filepath": "src/pages/slides/Slide1.tsx",
+    "title": "Title Page",
+    "description": "HYPER LENS submission details in the official SIH 2026 format",
+    "speakerNotes": ""
+  },
+  {
+    "id": "2553945c-ed4c-4374-900d-ddbc517a46e8",
+    "position": 2,
+    "filepath": "src/pages/slides/Slide2.tsx",
+    "title": "Idea Title",
+    "description": "Proposed solution, workflow, innovation and problem fit",
+    "speakerNotes": ""
+  },
+  {
+    "id": "29b5f5da-f12a-4540-92f8-22696865a4d1",
+    "position": 3,
+    "filepath": "src/pages/slides/Slide3.tsx",
+    "title": "Technical Approach",
+    "description": "End-to-end system architecture and implementation controls",
+    "speakerNotes": ""
+  },
+  {
+    "id": "005773d9-ab48-460b-b6a4-55eb756c4611",
+    "position": 4,
+    "filepath": "src/pages/slides/Slide4.tsx",
+    "title": "Feasibility and Viability",
+    "description": "Build feasibility, risks, mitigations and implementation path",
+    "speakerNotes": ""
+  },
+  {
+    "id": "4c524481-70d1-4ee4-b770-44d754046fe6",
+    "position": 5,
+    "filepath": "src/pages/slides/Slide5.tsx",
+    "title": "Impact and Benefits",
+    "description": "Stakeholder impact and expected operational outcomes",
+    "speakerNotes": ""
+  },
+  {
+    "id": "597dbf42-4b39-40df-9a3f-cef3db349a8e",
+    "position": 6,
+    "filepath": "src/pages/slides/Slide6.tsx",
+    "title": "Research and References",
+    "description": "Regulatory, technical and prototype evidence sources",
+    "speakerNotes": ""
+  }
+]

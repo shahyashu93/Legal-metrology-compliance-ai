@@ -50,3 +50,31 @@ mtime_ms = 1789220383738
 storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/b2b8095c-e2df-431e-a25b-c5e5e6a0b7f9/0bc6ca2c-b250-4454-bc21-6803c4dc05f0"
 storage_version_token = "1789220395306692"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "acjb8qgRRlwm6ENXWBQhf"
+uri = "file://.local/outputs/HYPER-LENS-SIH-2026.pptx"
+type = "slides"
+title = "HYPER LENS — SIH 2026 Presentation (PPTX)"
+description = "Editable six-slide presentation using the official SIH 2026 format and logos."
+logical_id = "48316a5f-1a6c-4f0d-98c4-b860c5183eee"
+content_hash = "sha256:2fb8ddf399cfd29640538fbec4b52b3807823bffe735c79d6f81b69e40a64241"
+size = 887429
+mtime_ms = 1789222166266
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/48316a5f-1a6c-4f0d-98c4-b860c5183eee/01c844f9-9359-4014-9ad2-1914b194e3e3"
+storage_version_token = "1789222172672405"
+content_type = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+
+[[outputs]]
+id = "sYYikTrKB4cYz8j01CwGm"
+uri = "file://.local/outputs/HYPER-LENS-SIH-2026.pdf"
+type = "pdf"
+title = "HYPER LENS — SIH 2026 Submission (PDF)"
+description = "Submission-ready PDF export in the official six-slide SIH 2026 format."
+logical_id = "ddd2c5f6-34b2-48e5-9329-91b8843ca000"
+content_hash = "sha256:d3d1e4bc39fcf2f992864dd9055677eec5d1cac71b873a9627dce97eb6de34bc"
+size = 535442
+mtime_ms = 1789222171744
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/ddd2c5f6-34b2-48e5-9329-91b8843ca000/1630e351-9ed6-4ee3-9cd6-6b849179048e"
+storage_version_token = "1789222173979437"
+content_type = "application/pdf"

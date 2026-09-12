@@ -1,0 +1,28 @@
+kind = "slides"
+previewPath = "/sih-2026-hyper-lens-presentation/"
+title = "HYPER LENS — SIH 2026 Presentation"
+description = "Official-format Smart India Hackathon 2026 presentation for HYPER LENS, an AI-assisted Legal Metrology package compliance platform."
+version = "1.0.0"
+id = "artifacts/sih-2026-hyper-lens-presentation"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/sih-2026-hyper-lens-presentation/" ]
+localPort = 26103
+
+[services.development]
+run = "pnpm --filter @workspace/sih-2026-hyper-lens-presentation run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sih-2026-hyper-lens-presentation", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sih-2026-hyper-lens-presentation/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "26103"
+BASE_PATH = "/sih-2026-hyper-lens-presentation/"
