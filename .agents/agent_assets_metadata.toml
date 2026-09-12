@@ -22,3 +22,17 @@ mtime_ms = 1789054512808
 storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/7287a8e8-8b2a-4ef6-82ca-05ee629b7c55/d0f9fc52-d326-436a-a573-1be0cebd6c08"
 storage_version_token = "1789054546433506"
 content_type = "video/mp4"
+
+[[outputs]]
+id = "JhksQW-95BuF7gmwi3cdI"
+uri = "file://hyper-lens-github-ready.zip"
+type = "unspecified"
+title = "Download HYPER LENS — GitHub Ready Project"
+description = "Complete GitHub-ready source archive with the web app, API server, video source, OpenAPI files, verified MP4, workspace configuration, and step-by-step upload guide."
+logical_id = "c1cc36e9-456c-47ff-a98c-2e67c155b408"
+content_hash = "sha256:ed3d954fcf36a32cb47893e4433c65532013521754cb319b33b4cfaa450e63a2"
+size = 5532959
+mtime_ms = 1789220112979
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/c1cc36e9-456c-47ff-a98c-2e67c155b408/c6d5888e-7d7c-4a81-bcc5-565946688e98"
+storage_version_token = "1789220123519118"
+content_type = "application/octet-stream"
