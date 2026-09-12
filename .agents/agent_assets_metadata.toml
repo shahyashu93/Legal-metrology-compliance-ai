@@ -36,3 +36,17 @@ mtime_ms = 1789220112979
 storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/c1cc36e9-456c-47ff-a98c-2e67c155b408/c6d5888e-7d7c-4a81-bcc5-565946688e98"
 storage_version_token = "1789220123519118"
 content_type = "application/octet-stream"
+
+[[outputs]]
+id = "FYnFoG-JwbyPQUwYQqZeX"
+uri = "file://hyper-lens-fullstack-github.zip"
+type = "unspecified"
+title = "Download HYPER LENS — Frontend + Backend"
+description = "Clean GitHub-ready full-stack repository with React frontend, Express backend, shared API libraries, safe environment templates, and a detailed README with architecture and sequence diagrams."
+logical_id = "b2b8095c-e2df-431e-a25b-c5e5e6a0b7f9"
+content_hash = "sha256:36b47ec4c53e9aa4b0cfa96d70ceb3fd20f3ceb99831cf2533fe9e0c8b8c8cef"
+size = 200533
+mtime_ms = 1789220383738
+storage_uri = "gcs://replit-rams-assets-sisko/rams/assets/repl:c56ec97d-8a16-4537-85d0-6ba3e9197e94/b2b8095c-e2df-431e-a25b-c5e5e6a0b7f9/0bc6ca2c-b250-4454-bc21-6803c4dc05f0"
+storage_version_token = "1789220395306692"
+content_type = "application/octet-stream"
